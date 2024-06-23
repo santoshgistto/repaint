@@ -14,6 +14,7 @@ import 'package:repaint/models/layer/layer.dart';
 import 'package:repaint/models/layer/paint.dart';
 import 'package:repaint/models/layer/text.dart';
 import 'package:repaint/widgets/interactive_canvas_viewer.dart';
+import 'package:uuid/uuid.dart';
 
 import 'edit_bar.dart';
 
@@ -52,6 +53,25 @@ class _GestureCanvasState extends State<GestureCanvas> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final canvas = context.read<CanvasCubit>().state.canvas;
+      List<IdentityLayer> layers = [];
+      layers.add(IdentityLayer(id: Uuid().v4(), data: ImageLayer(
+          layerType: "IMAGE",
+          offset: Offset.zero,
+          size: Size(500, 200),
+          imageUrl: "https://fastly.picsum.photos/id/26/4209/2769.jpg?hmac=vcInmowFvPCyKGtV7Vfh7zWcA_Z0kStrPDW3ppP0iGI"
+      )));
+      layers.add(IdentityLayer(id: Uuid().v4(), data: TextLayer(
+        layerType: "TEXT",
+        font: availableFonts[0],
+        offset: Offset(0, 0),
+        size: Size(220, 40),
+        style: TextStyle(
+          fontSize: 16,
+        ),
+        text: 'Lorem ipsum dolor sit amet consecteur adespising',
+      )));
+
+      context.read<CanvasCubit>().addIdentityLayer(layers);
       _effectiveCanvasSize = _getEffectiveCanvasSize(canvas);
       _positionCanvas();
     });
@@ -262,8 +282,8 @@ class _ImageCanvasState extends State<ImageCanvas> {
         borderRadius: BorderRadius.circular(layer.radius),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: MemoryImage(
-            layer.data!,
+          image: NetworkImage(
+            layer.imageUrl!
           ),
         ),
       ),
@@ -341,6 +361,7 @@ class _DraggableLayerState extends State<DraggableLayer> {
     final newLayer = identityLayer.copyWith(
       data: layer.copyWith(offset: layer.offset + newOffset),
     );
+
     context.read<CanvasCubit>().editLayer(newLayer);
     newOffset = Offset.zero;
     setState(() {});
@@ -631,6 +652,16 @@ class _SelectableComponentState extends State<SelectableComponent> {
         ),
       ),
     );
+    // yield Positioned(
+    //     right: 0,
+    //     top: 0,
+    //     child: InkWell(
+    //       onTap: (){
+    //         context.read<CanvasCubit>().removeLayer(widget.layer);
+    //       },
+    //       child: Icon(Icons.delete, color: Colors.red,),
+    //     )
+    // );
   }
 }
 

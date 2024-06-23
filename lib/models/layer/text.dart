@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:repaint/utils.dart';
 
 import 'layer.dart';
 
@@ -11,7 +12,11 @@ class TextLayer extends RLayer {
     required this.size,
     required this.offset,
     required this.text,
+    required this.layerType
   });
+
+  @override
+  String layerType;
 
   @override
   final Offset offset;
@@ -54,6 +59,7 @@ class TextLayer extends RLayer {
     TextAlign? align,
     String? font,
     Shadow? shadow,
+    String? layerType
   }) {
     return TextLayer(
       offset: offset ?? this.offset,
@@ -63,12 +69,24 @@ class TextLayer extends RLayer {
       align: align ?? this.align,
       font: font ?? this.font,
       shadow: shadow ?? this.shadow,
+        layerType: layerType ?? this.layerType
     );
   }
 
   @override
   String toString() {
     return '$text';
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = super.toJson();
+    data["text"] = text;
+    data['font'] = font;
+    data['textAlign'] =  exportTextAlign(align);
+    data['style'] = exportTextStyle(style);
+
+    return data;
   }
 }
 
@@ -82,4 +100,6 @@ const availableFonts = <String>[
   'Abril Fatface',
   'Roboto Condensed',
   'Merriweather',
+  'Prompt',
+  'Permanent Marker'
 ];

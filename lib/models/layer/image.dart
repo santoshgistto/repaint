@@ -5,51 +5,88 @@ import 'layer.dart';
 
 class ImageLayer extends RLayer {
   ImageLayer({
-    this.data,
+    //this.imageData,
+    this.imageUrl,
     required this.size,
-    required this.offset,
+    required this.offset ,
+    required this.layerType,
     this.radius = 0,
     this.shadow = const Shadow(),
   });
 
   @override
-  final Offset offset;
+  String layerType;
 
   @override
-  final double opacity = 1;
-
-  final Uint8List? data;
+   Offset offset;
 
   @override
-  final Size size;
+   double opacity = 1;
+
+   //Uint8List? imageData;
+
+   String? imageUrl = "";
 
   @override
-  final Shadow shadow;
-
-  final double radius;
+   Size size;
 
   @override
-  List<Object?> get props => [offset, opacity, data, size, shadow, radius];
+   Shadow shadow;
+
+   double radius;
+
+  @override
+  List<Object?> get props => [offset, opacity, size, shadow, radius];
 
   ImageLayer copyWith({
     Offset? offset,
     Size? size,
     double? opacity,
-    Uint8List? data,
     Shadow? shadow,
     double? radius,
+    String? layerType,
+    String? imageUrl
   }) {
     return ImageLayer(
       offset: offset ?? this.offset,
-      data: data ?? this.data,
       size: size ?? this.size,
       shadow: shadow ?? this.shadow,
       radius: radius ?? this.radius,
+      layerType: layerType ?? this.layerType,
+        imageUrl:imageUrl ?? this.imageUrl
     );
   }
+
 
   @override
   String toString() {
     return 'Image';
   }
+
+  @override
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = super.toJson();
+    data["radius"] = radius;
+    data["imageUrl"] = imageUrl;
+
+    return data;
+  }
+
+
+  ImageLayer  fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> offset= json["offset"];
+    Map<String, dynamic> size= json["size"];
+    Map<String, dynamic> shadow= json["shadow"];
+
+    var offset1 = Offset(offset["dx"], offset["dy"]);
+  //  this.opacity = json['opacity'];
+    var sizes = Size(size ['width'], size['height']);
+    // this.data = json['data'];
+    // this.imageUrl = json['imageUrl'];
+    // this.radius = json['radius'];
+
+    return ImageLayer(size: sizes, offset: offset1, layerType:  "");
+  }
+
+
 }

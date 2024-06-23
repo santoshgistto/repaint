@@ -13,7 +13,11 @@ class PaintLayer extends RLayer {
     required this.offset,
     required this.color,
     required this.radius,
+    required this.layerType
   });
+
+  @override
+  String layerType;
 
   @override
   final Offset offset;
@@ -58,6 +62,7 @@ class PaintLayer extends RLayer {
     Shadow? shadow,
     double? radius,
     BoxShape? shape,
+    String? layerType
   }) {
     return PaintLayer(
       offset: offset ?? this.offset,
@@ -67,6 +72,19 @@ class PaintLayer extends RLayer {
       shadow: shadow ?? this.shadow,
       radius: radius ?? this.radius,
       shape: shape ?? this.shape,
+        layerType: layerType ?? this.layerType
     );
   }
+
+  @override
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = super.toJson();
+    data['color'] = color.value;
+    data['boxShape']= shape.name;
+    data['radius'] = radius;
+    data['clippingPath'] = clippingPath.toString();
+    return data;
+  }
+
+
 }

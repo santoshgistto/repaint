@@ -12,6 +12,12 @@ part 'canvas_state.dart';
 class CanvasCubit extends Cubit<CanvasState> {
   CanvasCubit(RCanvas canvas) : super(CanvasState.initial(canvas));
 
+  void addIdentityLayer(List<IdentityLayer> layers) {
+    emit(state.copyWith(
+      layers: layers
+    ));
+  }
+
   void addLayer(RLayer layer) {
     final layers = state.layers.toList();
     final identityLayer = IdentityLayer(id: Uuid().v4(), data: layer);

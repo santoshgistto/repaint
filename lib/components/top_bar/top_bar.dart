@@ -12,6 +12,7 @@ import 'package:repaint/components/painting_area.dart';
 import 'package:repaint/components/top_bar/file_saver.dart'
     if (dart.library.html) 'package:repaint/components/top_bar/file_saver_web.dart'
     as web;
+import 'package:repaint/models/layer/image.dart';
 
 class TopBar extends StatelessWidget {
   @override
@@ -33,17 +34,17 @@ class TopBar extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 18.0),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                  ),
-                  onPressed: Navigator.of(context).pop,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 18.0),
+              //   child: IconButton(
+              //     icon: Icon(
+              //       Icons.arrow_back_ios,
+              //     ),
+              //     onPressed: Navigator.of(context).pop,
+              //   ),
+              // ),
               Text(
-                'Repaint',
+                'Editor',
                 style: GoogleFonts.lobster(
                   fontSize: 30,
                 ),
@@ -78,7 +79,6 @@ class TopBar extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -115,6 +115,10 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
     final ratioY = canvas.size.height / canvas.effectiveSize!.height;
     final maxRatio = max(ratioX, ratioY);
     final screenSize = MediaQuery.of(context).size;
+    if(cubit.state.layers.first.data is ImageLayer){
+      print("===> ${cubit.state.layers.first.data.props}");
+    }
+    print("===> ${cubit.state.layers.first.toJson()}");
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -124,12 +128,12 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 48.0),
-          child: Stack(
+          child: Column(
             children: [
               Center(
                 child: IgnorePointer(
                   child: ImageFiltered(
-                    imageFilter: ui.ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                    imageFilter: ui.ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                     child: RepaintBoundary(
                       key: repaintKey,
                       child: CanvasComponent(
@@ -141,33 +145,10 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
                   ),
                 ),
               ),
-              Container(color: Colors.white70),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        'Export your work',
-                        style: GoogleFonts.raleway(
-                          fontSize: 60,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    SizedBox(
-                      width: 200,
-                      height: 40,
-                      child: ElevatedButton(
-                        child: Text('Save as PNG'),
-                        onPressed: () => saveWork(maxRatio),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              ElevatedButton(
+                child: Text('Save as PNG'),
+                onPressed: () => saveWork(maxRatio),
+              )
             ],
           ),
         ),

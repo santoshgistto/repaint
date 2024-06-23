@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:layout/layout.dart';
+import 'package:repaint/pages/create_page.dart';
 import 'package:repaint/pages/welcome_page.dart';
 
 void main() {
@@ -15,12 +16,11 @@ class Repaint extends StatelessWidget {
         title: 'Repaint',
         theme: ThemeData(
           primaryColor: Color(0xff29f19c),
-          accentColor: Color(0xff29f19c),
           textTheme: GoogleFonts.ralewayTextTheme(
             Theme.of(context).textTheme,
           ),
         ),
-        home: WelcomePage(),
+        home: CreatePage.create(context, Size(1580, 800)),
       ),
     );
   }

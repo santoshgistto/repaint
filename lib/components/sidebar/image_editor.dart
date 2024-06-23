@@ -15,11 +15,11 @@ class ImageEditor extends StatelessWidget {
     void _updateImage() async {
       final bytes = await ImagePicker.pickImage();
       if (bytes == null) return;
-      cubit.editLayer(
-        selectedLayer.copyWith(
-          data: layer.copyWith(data: bytes),
-        ),
-      );
+      // cubit.editLayer(
+      //   selectedLayer.copyWith(
+      //     data: layer.copyWith(imageData: bytes),
+      //   ),
+      // );
     }
 
     return GestureDetector(
@@ -30,7 +30,7 @@ class ImageEditor extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: MemoryImage(layer.data!),
+            image: NetworkImage(layer.imageUrl!),
           ),
         ),
       ),

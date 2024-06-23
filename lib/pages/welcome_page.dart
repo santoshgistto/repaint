@@ -107,7 +107,6 @@ class WelcomePage extends StatelessWidget {
                         },
                         child: Text('Get started'),
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff202030),
                         ),
                       ),
                     ),

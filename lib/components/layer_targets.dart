@@ -69,12 +69,12 @@ class LayerTargets extends StatelessWidget {
           final bytes = await ImagePicker.pickImage();
           if (bytes == null) return;
           final cubit = context.read<CanvasCubit>();
-          final layer = (e.data as ImageLayer).copyWith(
-            offset: _localPosition(e.offset),
-            data: bytes,
-          );
+          // final layer = (e.data as ImageLayer).copyWith(
+          //   offset: _localPosition(e.offset),
+          //   imageUrl: bytes,
+          // );
 
-          cubit.addLayer(layer);
+         // cubit.addLayer(layer);
         }
       },
       builder: (context, objects, _) {

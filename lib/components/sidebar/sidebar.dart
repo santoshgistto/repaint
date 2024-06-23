@@ -107,7 +107,7 @@ class _CanvasSettingsState extends State<CanvasSettings> {
         SizedBox(height: 10),
         CanvasColorEditor(),
         SizedBox(height: 5),
-        Divider(color: Colors.blueGrey.shade700),
+        Divider(color: Colors.red),
         SizedBox(height: 10),
         Expanded(
           child: ReorderableListView(
@@ -209,6 +209,7 @@ class TextLayerTemplates extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bodyText = TextLayer(
+      layerType: "TEXT",
       font: availableFonts[0],
       offset: Offset(0, 0),
       size: Size(220, 40),
@@ -218,6 +219,7 @@ class TextLayerTemplates extends StatelessWidget {
       text: 'Lorem ipsum dolor sit amet consecteur adespising',
     );
     final headingText = TextLayer(
+      layerType: "TEXT",
       font: availableFonts[0],
       offset: Offset.zero,
       size: Size(150, 40),
@@ -228,6 +230,7 @@ class TextLayerTemplates extends StatelessWidget {
       text: 'Heading',
     );
     final subheading = TextLayer(
+      layerType: "TEXT",
       font: availableFonts[0],
       offset: Offset.zero,
       size: Size(120, 25),
@@ -278,10 +281,12 @@ class ImageLayerTemplates extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.watch<CanvasCubit>();
     final defaultImage = ImageLayer(
+      layerType: "IMAGE",
       offset: Offset.zero,
       size: Size(200, 200),
     );
     final backgroundImage = ImageLayer(
+      layerType: "IMAGE",
       offset: Offset.zero,
       size: cubit.state.canvas.effectiveSize ?? Size.zero,
     );
@@ -318,12 +323,14 @@ class PaintLayerTemplates extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultPaintLayer = PaintLayer(
+      layerType: "PAINT",
       size: Size(200, 200),
       offset: Offset.zero,
       color: Colors.blue,
       radius: 0,
     );
     final circlePaintLayer = PaintLayer(
+      layerType: "PAINT",
       size: Size(200, 200),
       offset: Offset.zero,
       color: Colors.blue,
@@ -331,6 +338,13 @@ class PaintLayerTemplates extends StatelessWidget {
       radius: 0,
     );
 
+    final linePaintLayer = PaintLayer(
+      size: Size(200, 200),
+      offset: Offset.zero,
+      color: Colors.red,
+      radius: 0,
+      layerType: "PAINT"
+    );
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,8 +441,7 @@ class DraggableComponent extends StatelessWidget {
             final bytes = await ImagePicker.pickImage();
             if (bytes == null)
               return;
-            else
-              layerToAdd = (layer as ImageLayer).copyWith(data: bytes);
+            //  layerToAdd = (layer as ImageLayer).copyWith(imageData: bytes);
           }
           context.read<CanvasCubit>().addLayer(layerToAdd);
         },
